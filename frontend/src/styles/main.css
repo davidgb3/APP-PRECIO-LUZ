@@ -7,9 +7,17 @@ body {
     min-height: 100vh;
     margin: 0;
 }
-/* header{
-
-} */
+header{
+    background:rgba(127, 171, 193, 0.47);
+    padding: 10px;
+    text-align: center;
+    margin-top: auto; /* Asegura que el footer esté en la parte inferior */
+    width: 100%;
+    height: 150px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+} 
 
 #app {
     flex: 1;
@@ -41,7 +49,7 @@ button {
 
 /* Estilos del footer */
 footer {
-    background: #f1f1f1;
+    background: rgba(45, 75, 108, 0.425);
     padding: 10px;
     text-align: center;
     margin-top: auto; /* Asegura que el footer esté en la parte inferior */

@@ -6,6 +6,7 @@ import { cardPrices } from "./components/cardPrices/cardPrices";
 import { renderChart } from "./components/chart/chart.js";
 import "./styles/main.css";
 
+
 export const urlData = import.meta.env.VITE_API_URL;
 export const hourRanges = import.meta.env.VITE_HOUR_RANGES.split(",");
 
@@ -39,37 +40,45 @@ const renderPrices = (miMap) => {
         pricesContainer.appendChild(priceCard);
     });
 }
-
 const handleClick = () => {
     const selectedHourRange = document.getElementById("hour-rangeSelector").value;
-    const startHour = selectedHourRange.split("-")[0];
-    const endHour = selectedHourRange.split("-")[1];
+    console.log("Selected Hour Range:", selectedHourRange);
+    
+    const [startHour, endHour] = selectedHourRange.split("-").map(Number);
+    console.log("Start Hour:", startHour, "End Hour:", endHour);
 
     pricesByHourRanges.clear();
     pricesByDate.clear();
 
     showSpinner();
+
     getData(urlData)
         .then((data) => {
-            const { included } = data;
+            console.log("Data Fetched:", data);
+            data.forEach((dataObject) => {
+                const { date, hour, price } = dataObject;
+                const hourNumber = parseInt(hour.split(":")[0]);
+                console.log("Processing:", { date, hour, hourNumber, price });
 
-            for (const item of included) {
-                const { values } = item.attributes;
-                values.forEach(element => {
-                    const { value, datetime } = element;
-                    const dt = new Date(datetime);
-
-                    if (dt.getHours() >= startHour && dt.getHours() <= endHour) {
-                        pricesByHourRanges.set(dt.toLocaleString(), value);
-
-                        if (!pricesByDate.has(dt.getDate())) {
-                            pricesByDate.set(dt.getDate(), new Map());
-                        }
-                        pricesByDate.get(dt.getDate()).set(dt.getHours(), value);
+                if (hourNumber >= startHour && hourNumber <= endHour) {
+                    if (!pricesByDate.has(date)) {
+                        pricesByDate.set(date, new Map());
                     }
-                });
-            }
-            renderChart(pricesByHourRanges);
+                    pricesByDate.get(date).set(hour, price);
+                }
+            });
+
+            // Asegurar que pricesByDate está ordenado por fecha y hora
+            pricesByDate.forEach((prices, date) => {
+                console.log("Prices Before Sort:", Array.from(prices.entries()));
+                const sortedPrices = Array.from(prices.entries()).sort(([hourA], [hourB]) => parseInt(hourA) - parseInt(hourB));
+                console.log("Prices After Sort:", sortedPrices);
+                pricesByDate.set(date, new Map(sortedPrices));
+            });
+
+            console.log("Prices By Date:", pricesByDate);
+
+            renderChart(pricesByDate);
             renderPrices(pricesByDate);
             hideSpinner();
         })
@@ -77,7 +86,8 @@ const handleClick = () => {
             console.error("Error al cargar los datos:", err);
             hideSpinner();
         });
-}
+};
+
 
 // ----------- Main -----------------
 document.addEventListener("DOMContentLoaded", () => {
@@ -86,24 +96,41 @@ document.addEventListener("DOMContentLoaded", () => {
     // Crear y añadir el spinner
     const spinner = createSpinner();
     header.appendChild(spinner);
+    const logo=document.createElement("img");
+    logo.src="./src/img/Logoconletra.png";
+    logo.width="150";
+    logo.height="150";
+    header.appendChild(logo);
+
+
+    
+    const br=document.createElement('br');
+    header.appendChild(br);
+
+    
+    const luz=document.createElement('button');
+    luz.textContent="Luz";
+    header.appendChild(luz);
+
+    const tiempo=document.createElement('button');
+    tiempo.textContent="Tiempo";
+    header.appendChild(tiempo);
+
+    app.appendChild(header);
 
     // Añadir título
     const title = document.createElement('h2');
     title.textContent = "Red eléctrica española";
-    header.appendChild(title);
+    app.appendChild(title);
 
     // Crear y añadir el selector
     const selector = createSelector();
-    header.appendChild(selector);
-
+    app.appendChild(selector);
     // Crear y añadir el botón cargar
     const loadPricesBtn = createLoadButton();
     // const loadWheather= createLoadButtonWheather();
-    
-    header.appendChild(loadPricesBtn);
+    app.appendChild(loadPricesBtn);
     // header.appendChild(loadWheather);
-
-    app.appendChild(header);
 
     // Crear el contenedor del gráfico si no existe
     let chartContainer = document.getElementById("chart-container");
