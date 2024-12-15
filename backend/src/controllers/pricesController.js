@@ -32,7 +32,7 @@ export const fetchPricesFromDB = (req, res) => {
           if(err){
               res.status(500).json({error:err.message});   
           } else {
-              res.status(200).json({rows});
+              res.status(200).json(rows);
           }
       });
 };
@@ -43,7 +43,7 @@ export const initializePricesDB = async (req, res) => {
     const data = await fetchPricesFromAPI();
     //data es un array de objetos con date, hour price.
     //obtengo valores y luego los inserto
-    deleteDataFromPricesDB((err, result) => {
+    deleteDataFromPricesDB((err) => {
       if(err){
           res.status(500).json({error: err.message});
       } else {
