@@ -1,0 +1,19 @@
+h3 {
+    background-color: lightblue;
+    text-align: center;
+    margin-top: 0px;
+}
+
+.price-day {
+    background-color: lightcyan;
+    text-align: center;
+    border: 2px solid black;
+    width: 30%;
+    margin: 10px;
+    box-shadow: 5px 5px 10px gray;
+    float: left;
+}
+
+.price-day:hover {
+    transform: scale(1.05);
+}

@@ -1,5 +1,6 @@
 import { removeSessionKey, setSessionKey } from "../../helpers/sessionKey";
 import { login } from "../../helpers/usuarios";
+import { mainView } from "../mainView/mainView";
 import { registerForm } from "../register/register";
 import { createSpinner, hideSpinner, showSpinner } from "../spinner/spinner";
 import './login.css';
@@ -17,10 +18,6 @@ export const loginForm = () => {
 
     const registerBtn = document.createElement('button');
     registerBtn.innerHTML = 'Registrase';
-
-    const logoutBtn = document.createElement('button');
-    logoutBtn.innerHTML = 'Cerrar Sesión';
-    logoutBtn.style.display = 'none';
 
     const spinner = createSpinner();
 
@@ -44,20 +41,14 @@ export const loginForm = () => {
             setTimeout(() => {
                 hideSpinner();
                 if(localStorage.hasOwnProperty("sessionKey") && localStorage.getItem("sessionKey")){
-                    logoutBtn.style.display = 'block';
-                
-                    logoutBtn.addEventListener("click", () => {
-                        showSpinner();
-                        setTimeout(() => {
-                            hideSpinner();
-                            removeSessionKey("sessionKey");
-                            alert("Has cerrado sesión.");
-                            location.reload();
-                            },200);
-                        });
-                    };
-                    form.reset();
-                },2000);
+    
+                    const app = document.getElementById('app');
+                    app.innerHTML = '';
+                    const vistaPrincipal = mainView();
+                    app.appendChild(vistaPrincipal);
+                };
+                form.reset();
+            },2000);
         } catch (error) {
             alert("Error al iniciar sesión. Usuario o contraseña incorrectos.");
             console.error("Error al iniciar sesión. Usuario o contraseña incorrectos --> ",error);
@@ -78,7 +69,6 @@ export const loginForm = () => {
     });
 
     form.append(registerBtn, spinner);
-    app.appendChild(logoutBtn);
 
     return form;
 };
