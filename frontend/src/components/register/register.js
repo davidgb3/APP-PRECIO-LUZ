@@ -1,5 +1,7 @@
 import { resgister } from "../../helpers/usuarios";
 import { loginForm } from "../login/login";
+import { createSpinner, hideSpinner, showSpinner } from "../spinner/spinner.js";
+import './register.css';
 
 export const registerForm = () => {
     const form = document.createElement('form');
@@ -13,7 +15,10 @@ export const registerForm = () => {
     `;
 
     const errorMessage = document.createElement('p');
+    errorMessage.style.color = 'red';
     errorMessage.textContent = "";
+
+    const spinner = createSpinner();
 
     const cancelBtn = document.createElement('button');
     cancelBtn.textContent = "Cancelar";
@@ -35,12 +40,22 @@ export const registerForm = () => {
             
             const username = usernameInput.value;
             const password = passwordInput.value;
+
+            showSpinner();
+
             try {
                 const response = await resgister(username, password);
             } catch (error) {
                 console.log(error);
             }
-            form.reset();
+            setTimeout(() => {
+                hideSpinner();
+                form.reset();
+                const app = document.getElementById('app');
+                app.innerHTML = '';
+                const login = loginForm();
+                app.appendChild(login);
+            }, 2000);
         }else{
             errorMessage.textContent = "Las contraseñas no coinciden.";
             form.appendChild(errorMessage);
@@ -49,12 +64,16 @@ export const registerForm = () => {
 
     cancelBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        const app = document.getElementById('app');
-        app.innerHTML = '';
-        const login = loginForm();
-        app.appendChild(login);
+        showSpinner();
+        setTimeout(() => {
+            hideSpinner();
+            const app = document.getElementById('app');
+            app.innerHTML = '';
+            const login = loginForm();
+            app.appendChild(login);
+        },2000);
     });
     
-    form.appendChild(cancelBtn);
+    form.append(cancelBtn, spinner);
     return form;
 };
