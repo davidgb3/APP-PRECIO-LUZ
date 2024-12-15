@@ -1,0 +1,50 @@
+/* main.css */
+
+/* Asegura que el body y el contenedor principal tengan el diseño adecuado */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+/* header{
+
+} */
+
+#app {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra los elementos horizontalmente */
+}
+
+/* Estilo para los botones */
+button {
+    width: auto; /* Ajusta el ancho automáticamente */
+    padding: 10px 20px; /* Añade padding para un mejor aspecto */
+    margin: 10px; /* Añade margen entre los botones */
+    border: 1px solid #ccc; /* Añade un borde */
+    background-color: #f1f1f1; /* Color de fondo */
+    cursor: pointer; /* Cambia el cursor a pointer */
+}
+
+/* Ajustes de estilo para el contenedor del gráfico */
+#chart-container {
+    width: 100%; /* Asegura que el contenedor del gráfico use todo el ancho disponible */
+    padding: 20px;
+}
+
+/* Estilos específicos para los contenedores dinámicos */
+#prices-container {
+    flex: 1;
+}
+
+/* Estilos del footer */
+footer {
+    background: #f1f1f1;
+    padding: 10px;
+    text-align: center;
+    margin-top: auto; /* Asegura que el footer esté en la parte inferior */
+    width: 100%;
+
+}
