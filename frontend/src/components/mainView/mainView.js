@@ -158,9 +158,10 @@ export const mainView = () => {
     const footer = document.createElement('footer');
     footer.innerHTML = `
         <p>Desarrollado por:</p>
-        Armando: <a href="https://github.com/armandomarelius">@armandomarelius</a>
-        David: <a href="https://github.com/davidgb3">@davidgb3</a>
-        Javier: <a href="https://github.com/javiilpf">@javiilpf</a>
+        Armando: <a href="https://github.com/armandomarelius" target="_blank">@armandomarelius</a>
+        David: <a href="https://github.com/davidgb3" target="_blank">@davidgb3</a>
+        Javier: <a href="https://github.com/javiilpf" target="_blank">@javiilpf</a>
+        Rubén: <a href="https://github.com/Rzamora13" target="_blank">@Rzamora13</a>
     `;
     mainViewDiv.appendChild(footer);
 

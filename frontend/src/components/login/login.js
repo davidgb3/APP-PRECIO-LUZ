@@ -6,6 +6,15 @@ import { createSpinner, hideSpinner, showSpinner } from "../spinner/spinner";
 import './login.css';
 
 export const loginForm = () => {
+    if(localStorage.hasOwnProperty("sessionKey") && localStorage.getItem("sessionKey")){
+    
+        const app = document.getElementById('app');
+        app.innerHTML = '';
+        const vistaPrincipal = mainView();
+        app.appendChild(vistaPrincipal);
+        exit();
+    };
+
     const app = document.getElementById('app'); 
     const form = document.createElement('form');
     form.id = 'login-form';
@@ -59,12 +68,16 @@ export const loginForm = () => {
     registerBtn.addEventListener('click', (e) => {
         e.preventDefault();
         showSpinner(); 
+        // setSessionKey("sessionKey", "register");
         setTimeout(() => {
             hideSpinner();
-            const app = document.getElementById('app');
-            app.innerHTML = '';
-            const register = registerForm();
-            app.appendChild(register);
+            
+                const app = document.getElementById('app');
+                app.innerHTML = '';
+                const register = registerForm();
+                app.appendChild(register);
+
+            
         },2000);
     });
 
